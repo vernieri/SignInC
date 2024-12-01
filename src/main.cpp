@@ -1,6 +1,8 @@
 #include <iostream>
+#include "signer.h"
 
 int main() {
-    std::cout << "Welcome to SignInC - Electronic Signature System!" << std::endl;
+    std::cout << "Gerando chaves RSA..." << std::endl;
+    generateKeys("private.pem", "public.pem");
     return 0;
 }
