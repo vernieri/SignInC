@@ -1,4 +1,5 @@
 #include "signer.h"
+#include "logger.h"
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
@@ -12,23 +13,29 @@ void printHelp() {
 }
 
 // Função para carregar o conteúdo de um arquivo
-std::string loadFile(const std::string& filename) {
+std::string loadFile(const std::string& filename, Logger& logger) {
     std::ifstream file(filename);
     if (!file.is_open()) {
-        throw std::runtime_error("Não foi possível abrir o arquivo: " + filename);
+        logger.log("Erro ao abrir o arquivo: " + filename, ERROR);
+        throw std::runtime_error("Arquivo não encontrado: " + filename);
     }
     std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
     file.close();
+    logger.log("Arquivo carregado com sucesso: " + filename, INFO);
     return content;
 }
 
 int main(int argc, char* argv[]) {
+    Logger logger("signinC.log");
+
     if (argc < 2) {
+        logger.log("Número insuficiente de argumentos.", ERROR);
         printHelp();
         return 1;
     }
 
     std::string command = argv[1];
+    logger.log("Comando recebido: " + command, INFO);
 
     try {
         if (command == "generate-keys") {
@@ -41,9 +48,12 @@ int main(int argc, char* argv[]) {
                 }
             }
             if (privateKeyFile.empty() || publicKeyFile.empty()) {
+                logger.log("Arquivos de chave não fornecidos com -p e -u.", ERROR);
                 throw std::runtime_error("Por favor, forneça os arquivos de chave com -p e -u.");
             }
+            logger.log("Gerando chaves...", INFO);
             generateKeys(privateKeyFile, publicKeyFile);
+            logger.log("Chaves geradas com sucesso.", INFO);
 
         } else if (command == "sign") {
             std::string inputFile, privateKeyFile, signatureFile;
@@ -57,24 +67,27 @@ int main(int argc, char* argv[]) {
                 }
             }
             if (inputFile.empty() || privateKeyFile.empty() || signatureFile.empty()) {
+                logger.log("Argumentos ausentes para o comando 'sign'.", ERROR);
                 throw std::runtime_error("Por favor, forneça o arquivo de entrada, chave privada e arquivo de saída.");
             }
 
             // Carregar mensagem do arquivo
-            std::string message = loadFile(inputFile);
+            logger.log("Carregando mensagem do arquivo: " + inputFile, INFO);
+            std::string message = loadFile(inputFile, logger);
 
             // Gerar assinatura
-            std::string signature = signMessage(message, privateKeyFile);
+            logger.log("Assinando a mensagem...", INFO);
+            std::string signature = signMessage(message, privateKeyFile, logger);
 
             // Salvar assinatura no arquivo
             std::ofstream outFile(signatureFile);
             if (!outFile.is_open()) {
+                logger.log("Erro ao salvar a assinatura em: " + signatureFile, ERROR);
                 throw std::runtime_error("Não foi possível salvar a assinatura em: " + signatureFile);
             }
             outFile << signature;
             outFile.close();
-
-            std::cout << "Mensagem assinada com sucesso. Assinatura salva em " << signatureFile << std::endl;
+            logger.log("Mensagem assinada com sucesso. Assinatura salva em " + signatureFile, INFO);
 
         } else if (command == "verify") {
             std::string inputFile, signatureFile, publicKeyFile;
@@ -88,24 +101,30 @@ int main(int argc, char* argv[]) {
                 }
             }
             if (inputFile.empty() || signatureFile.empty() || publicKeyFile.empty()) {
+                logger.log("Argumentos ausentes para o comando 'verify'.", ERROR);
                 throw std::runtime_error("Por favor, forneça o arquivo de entrada, assinatura e chave pública.");
             }
 
             // Carregar mensagem e assinatura
-            std::string message = loadFile(inputFile);
-            std::string signature = loadFile(signatureFile);
+            logger.log("Carregando mensagem do arquivo: " + inputFile, INFO);
+            std::string message = loadFile(inputFile, logger);
+            logger.log("Carregando assinatura do arquivo: " + signatureFile, INFO);
+            std::string signature = loadFile(signatureFile, logger);
 
             // Verificar a assinatura
-            bool isValid = verifySignature(message, signature, publicKeyFile);
-            std::cout << "A assinatura é válida? " << (isValid ? "Sim" : "Não") << std::endl;
+            logger.log("Verificando a assinatura...", INFO);
+            bool isValid = verifySignature(message, signature, publicKeyFile, logger);
+            logger.log("A assinatura é válida? " + std::string(isValid ? "Sim" : "Não"), INFO);
 
         } else {
+            logger.log("Comando desconhecido: " + command, ERROR);
             printHelp();
         }
     } catch (const std::exception& e) {
-        std::cerr << "Erro: " << e.what() << std::endl;
+        logger.log(std::string("Erro: ") + e.what(), ERROR);
         return 1;
     }
 
+    logger.log("Execução concluída.", INFO);
     return 0;
 }
