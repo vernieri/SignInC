@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/radesh/Documentos/signinc/src/signer.cpp
+signer.h
+/home/radesh/Documentos/signinc/src/signer.h
+openssl/pem.h
+-
+openssl/err.h
+-
+openssl/sha.h
+-
+openssl/rsa.h
+-
+iostream
+-
+fstream
+-
+vector
+-
+
+/home/radesh/Documentos/signinc/src/signer.h
+string
+-
+
+/home/radesh/Documentos/signinc/tests/test_signinC.cpp
+gtest/gtest.h
+-
+../src/signer.h
+/home/radesh/Documentos/signinc/src/signer.h
+fstream
+-
+string
+-
+
