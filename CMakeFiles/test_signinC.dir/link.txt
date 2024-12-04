@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/test_signinC.dir/tests/test_signinC.cpp.o CMakeFiles/test_signinC.dir/src/signer.cpp.o  -o test_signinC  -lgtest -lgtest_main -lpthread -lssl -lcrypto 
