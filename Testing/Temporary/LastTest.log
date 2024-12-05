@@ -1,10 +1,10 @@
-Start testing: Dec 04 14:45 -03
+Start testing: Dec 04 14:47 -03
 ----------------------------------------------------------
 1/1 Testing: SignInCTests
 1/1 Test: SignInCTests
 Command: "/home/radesh/Documentos/signinc/test_signinC"
 Directory: /home/radesh/Documentos/signinc
-"SignInCTests" start time: Dec 04 14:45 -03
+"SignInCTests" start time: Dec 04 14:47 -03
 Output:
 ----------------------------------------------------------
 Running main() from /build/googletest-j5yxiC/googletest-1.10.0/googletest/src/gtest_main.cc
@@ -15,26 +15,26 @@ Running main() from /build/googletest-j5yxiC/googletest-1.10.0/googletest/src/gt
 Chaves geradas com sucesso: 
  - Chave privada: test_private.pem
  - Chave pública: test_public.pem
-[       OK ] KeyGenerationTest.GenerateKeysCreatesFiles (87 ms)
-[----------] 1 test from KeyGenerationTest (87 ms total)
+[       OK ] KeyGenerationTest.GenerateKeysCreatesFiles (64 ms)
+[----------] 1 test from KeyGenerationTest (64 ms total)
 
 [----------] 1 test from SignatureTest
 [ RUN      ] SignatureTest.SignAndValidateMessage
 Chaves geradas com sucesso: 
  - Chave privada: test_private.pem
  - Chave pública: test_public.pem
-[       OK ] SignatureTest.SignAndValidateMessage (11 ms)
-[----------] 1 test from SignatureTest (11 ms total)
+[       OK ] SignatureTest.SignAndValidateMessage (77 ms)
+[----------] 1 test from SignatureTest (77 ms total)
 
 [----------] Global test environment tear-down
-[==========] 2 tests from 2 test suites ran. (98 ms total)
+[==========] 2 tests from 2 test suites ran. (141 ms total)
 [  PASSED  ] 2 tests.
 <end of output>
-Test time =   0.10 sec
+Test time =   0.15 sec
 ----------------------------------------------------------
 Test Passed.
-"SignInCTests" end time: Dec 04 14:45 -03
+"SignInCTests" end time: Dec 04 14:47 -03
 "SignInCTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Dec 04 14:45 -03
+End testing: Dec 04 14:47 -03

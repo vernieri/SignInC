@@ -3,15 +3,13 @@
 
 #include <string>
 
-
-
-// Geração de chaves (já implementado)
+// Geração de chaves
 void generateKeys(const std::string& privateKeyFile, const std::string& publicKeyFile);
 
-// Assinar uma mensagem
+// Assinatura de mensagem
 std::string signMessage(const std::string& message, const std::string& privateKeyFile);
 
-// Verificar uma assinatura
+// Validação de assinatura
 bool verifySignature(const std::string& message, const std::string& signature, const std::string& publicKeyFile);
 
 #endif // SIGNER_H

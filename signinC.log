@@ -1,0 +1,72 @@
+2024-12-05 15:47:59 [INFO] Comando recebido: generate-keys
+2024-12-05 15:47:59 [INFO] Gerando chaves...
+2024-12-05 15:47:59 [INFO] Chaves geradas com sucesso.
+2024-12-05 15:47:59 [INFO] Execução concluída.
+2024-12-05 15:48:11 [INFO] Comando recebido: sign
+2024-12-05 15:48:11 [INFO] Carregando mensagem do arquivo: message.txt
+2024-12-05 15:48:11 [INFO] Arquivo carregado com sucesso: message.txt
+2024-12-05 15:48:11 [INFO] Assinando a mensagem...
+2024-12-05 15:48:11 [INFO] Mensagem assinada com sucesso. Assinatura salva em signature.txt
+2024-12-05 15:48:11 [INFO] Execução concluída.
+2024-12-05 15:48:21 [INFO] Comando recebido: verify
+2024-12-05 15:48:21 [INFO] Carregando mensagem do arquivo: message.txt
+2024-12-05 15:48:21 [INFO] Arquivo carregado com sucesso: message.txt
+2024-12-05 15:48:21 [INFO] Carregando assinatura do arquivo: signature.txt
+2024-12-05 15:48:21 [INFO] Arquivo carregado com sucesso: signature.txt
+2024-12-05 15:48:21 [INFO] Verificando a assinatura...
+2024-12-05 15:48:21 [INFO] A assinatura é válida? Sim
+2024-12-05 15:48:21 [INFO] Execução concluída.
+2024-12-05 15:48:34 [INFO] Comando recebido: sign-json
+2024-12-05 15:48:34 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 2: 0x9A
+2024-12-05 15:51:03 [INFO] Comando recebido: sign-json
+2024-12-05 15:51:03 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 2: 0x9A
+2024-12-05 15:52:01 [INFO] Comando recebido: sign-json
+2024-12-05 15:52:01 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 2: 0x9A
+2024-12-05 15:52:28 [INFO] Comando recebido: sign-json
+2024-12-05 15:52:28 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 2: 0x9A
+2024-12-05 15:54:40 [INFO] Comando recebido: sign-json
+2024-12-05 15:54:40 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 1: 0x6C
+2024-12-05 15:54:58 [INFO] Comando recebido: sign-json
+2024-12-05 15:54:58 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 1: 0x6C
+2024-12-05 15:55:25 [INFO] Comando recebido: sign-json
+2024-12-05 15:55:25 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 1: 0x6C
+2024-12-05 15:57:25 [INFO] Comando recebido: sign-json
+2024-12-05 15:57:25 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 0: 0x94
+2024-12-05 15:57:38 [INFO] Comando recebido: sign-json
+2024-12-05 15:57:38 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 0: 0x94
+2024-12-05 15:58:30 [INFO] Comando recebido: sign-json
+2024-12-05 15:58:31 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 0: 0x94
+2024-12-05 15:59:53 [INFO] Comando recebido: sign-json
+2024-12-05 15:59:53 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 0: 0x94
+2024-12-05 16:00:07 [INFO] Comando recebido: sign-json
+2024-12-05 16:00:07 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 0: 0x94
+2024-12-05 16:00:14 [INFO] Comando recebido: sign-json
+2024-12-05 16:00:14 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 0: 0x94
+2024-12-05 16:01:05 [INFO] Comando recebido: sign-json
+2024-12-05 16:01:05 [ERROR] Erro: [json.exception.parse_error.101] parse error at line 1, column 1: syntax error while parsing value - unexpected end of input; expected '[', '{', or a literal
+2024-12-05 16:01:33 [INFO] Comando recebido: sign-json
+2024-12-05 16:01:33 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 1: 0x6C
+2024-12-05 16:06:34 [INFO] Comando recebido: sign-json
+2024-12-05 16:06:34 [INFO] Execução concluída.
+2024-12-05 16:07:55 [INFO] Comando recebido: verify-json
+2024-12-05 16:07:55 [ERROR] Erro: [json.exception.parse_error.101] parse error at line 1, column 1: syntax error while parsing value - unexpected end of input; expected '[', '{', or a literal
+2024-12-05 16:11:19 [INFO] Comando recebido: sign-json
+2024-12-05 16:11:19 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 1: 0x6C
+2024-12-05 16:12:29 [INFO] Comando recebido: sign-json
+2024-12-05 16:12:29 [ERROR] Erro: [json.exception.type_error.316] invalid UTF-8 byte at index 1: 0x6C
+2024-12-05 16:15:16 [INFO] Comando recebido: sign-json
+2024-12-05 16:15:16 [ERROR] Erro: Erro ao construir o JSON de saída: [json.exception.type_error.316] invalid UTF-8 byte at index 1: 0x6C
+2024-12-05 16:48:46 [INFO] Comando recebido: sign-json
+2024-12-05 16:48:46 [INFO] Execução concluída.
+2024-12-05 16:50:26 [INFO] Comando recebido: verify-json
+2024-12-05 16:50:26 [INFO] Execução concluída.
+2024-12-05 16:51:15 [INFO] Comando recebido: generate-keys
+2024-12-05 16:51:15 [INFO] Gerando chaves...
+2024-12-05 16:51:15 [INFO] Chaves geradas com sucesso.
+2024-12-05 16:51:15 [INFO] Execução concluída.
+2024-12-05 16:51:19 [INFO] Comando recebido: sign-json
+2024-12-05 16:51:19 [INFO] Execução concluída.
+2024-12-05 16:51:25 [INFO] Comando recebido: verify-json
+2024-12-05 16:51:25 [INFO] Execução concluída.
+2024-12-05 17:30:39 [INFO] Comando recebido: verify-json
+2024-12-05 17:30:39 [INFO] Execução concluída.

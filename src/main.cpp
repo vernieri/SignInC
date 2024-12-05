@@ -3,6 +3,9 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <nlohmann/json.hpp>
+#include "utils.h" // Inclua o cabeçalho da função Base64
+using json = nlohmann::json;
 
 // Função para exibir o manual de uso
 void printHelp() {
@@ -27,6 +30,7 @@ std::string loadFile(const std::string& filename, Logger& logger) {
 
 int main(int argc, char* argv[]) {
     Logger logger("signinC.log");
+    
 
     if (argc < 2) {
         logger.log("Número insuficiente de argumentos.", ERROR);
@@ -77,7 +81,7 @@ int main(int argc, char* argv[]) {
 
             // Gerar assinatura
             logger.log("Assinando a mensagem...", INFO);
-            std::string signature = signMessage(message, privateKeyFile, logger);
+            std::string signature = signMessage(message, privateKeyFile);
 
             // Salvar assinatura no arquivo
             std::ofstream outFile(signatureFile);
@@ -113,11 +117,140 @@ int main(int argc, char* argv[]) {
 
             // Verificar a assinatura
             logger.log("Verificando a assinatura...", INFO);
-            bool isValid = verifySignature(message, signature, publicKeyFile, logger);
+            bool isValid = verifySignature(message, signature, publicKeyFile);
             logger.log("A assinatura é válida? " + std::string(isValid ? "Sim" : "Não"), INFO);
+        
+
+        } else if (command == "sign-json") {
+            // Novo comando para "sign-json"
+            std::cout << "[DEBUG] Comando 'sign-json' chamado." << std::endl;
+            std::string inputFile, privateKeyFile, outputFile;
+            for (int i = 2; i < argc; ++i) {
+                if (std::string(argv[i]) == "-i") {
+                    inputFile = argv[++i];
+                } else if (std::string(argv[i]) == "-p") {
+                    privateKeyFile = argv[++i];
+                } else if (std::string(argv[i]) == "-o") {
+                    outputFile = argv[++i];
+                }
+            }
+            if (inputFile.empty() || privateKeyFile.empty() || outputFile.empty()) {
+                throw std::runtime_error("Por favor, forneça o arquivo JSON de entrada, chave privada e arquivo de saída.");
+            }
+
+            // Ler o JSON de entrada
+            std::ifstream inFile(inputFile);
+            if (!inFile.is_open()) {
+                throw std::runtime_error("Erro ao abrir o arquivo JSON de entrada.");
+            }
+            std::string fileContent((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
+            std::cout << "[DEBUG] Conteúdo bruto do arquivo: " << fileContent << std::endl;
+
+            json messageJson;
+            try {
+                messageJson = json::parse(fileContent);
+            } catch (const json::parse_error& e) {
+                throw std::runtime_error("Erro ao fazer o parsing do JSON: " + std::string(e.what()));
+            }
+            inFile.close();
+
+            // Serializar o JSON para string
+            std::string message = messageJson.dump();
+            std::cout << "[DEBUG] Mensagem serializada para assinatura: " << message << std::endl;
+
+            // Gerar assinatura
+            std::string signature;
+            try {
+                signature = signMessage(message, privateKeyFile);
+                std::cout << "[DEBUG] Assinatura gerada: " << signature << std::endl;
+            } catch (const std::exception& e) {
+                throw std::runtime_error("Erro ao gerar a assinatura: " + std::string(e.what()));
+            }
+
+            // Codificar a assinatura em Base64
+            std::string signatureBase64 = base64Encode(signature);
+            std::cout << "[DEBUG] Assinatura codificada em Base64: " << signatureBase64 << std::endl;
+
+            // Criar JSON de saída
+            json outputJson;
+            try {
+                outputJson["original_message"] = messageJson;
+                outputJson["signature"] = signatureBase64;
+                std::cout << "[DEBUG] JSON de saída: " << outputJson.dump(4) << std::endl;
+            } catch (const std::exception& e) {
+                throw std::runtime_error("Erro ao construir o JSON de saída: " + std::string(e.what()));
+            }
+
+            // Salvar JSON de saída
+            std::ofstream outFile(outputFile);
+            if (!outFile.is_open()) {
+                throw std::runtime_error("Erro ao abrir o arquivo de saída para escrita: " + outputFile);
+            }
+            outFile << outputJson.dump(4);
+            outFile.close();
+
+            std::cout << "[DEBUG] Arquivo de saída salvo: " << outputFile << std::endl;
+            std::cout << "Mensagem JSON assinada com sucesso em " << outputFile << std::endl;
+
+
+
+        } else if (command == "verify-json") {
+            // Novo comando para "verify-json"
+            std::cout << "[DEBUG] Comando 'verify-json' chamado." << std::endl;
+
+            std::string inputFile, publicKeyFile;
+            for (int i = 2; i < argc; ++i) {
+                if (std::string(argv[i]) == "-i") {
+                    inputFile = argv[++i];
+                } else if (std::string(argv[i]) == "-u") {
+                    publicKeyFile = argv[++i];
+                }
+            }
+            if (inputFile.empty() || publicKeyFile.empty()) {
+                throw std::runtime_error("Por favor, forneça o arquivo JSON de entrada e a chave pública.");
+            }
+
+            // Ler o arquivo JSON assinado
+            std::ifstream inFile(inputFile);
+            if (!inFile.is_open()) {
+                throw std::runtime_error("Erro ao abrir o arquivo JSON assinado: " + inputFile);
+            }
+
+            json inputJson;
+            try {
+                inFile >> inputJson;
+            } catch (const json::parse_error& e) {
+                throw std::runtime_error("Erro ao fazer o parsing do JSON: " + std::string(e.what()));
+            }
+            inFile.close();
+
+            // Extrair mensagem original e assinatura
+            std::string originalMessage;
+            std::string signatureBase64;
+            try {
+                originalMessage = inputJson["original_message"].dump(); // Serializa o JSON para string
+                signatureBase64 = inputJson["signature"];
+            } catch (const json::exception& e) {
+                throw std::runtime_error("Erro ao extrair os campos do JSON: " + std::string(e.what()));
+            }
+
+            // Decodificar a assinatura de Base64
+            std::string decodedSignature = base64Decode(signatureBase64);
+            std::cout << "[DEBUG] Assinatura decodificada: " << decodedSignature << std::endl;
+
+            // Validar a assinatura
+            bool isValid = false;
+            try {
+                isValid = verifySignature(originalMessage, decodedSignature, publicKeyFile);
+            } catch (const std::exception& e) {
+                throw std::runtime_error("Erro ao validar a assinatura: " + std::string(e.what()));
+            }
+
+            // Exibir o resultado
+            std::cout << "A assinatura é válida? " << (isValid ? "Sim" : "Não") << std::endl;
 
         } else {
-            logger.log("Comando desconhecido: " + command, ERROR);
+            std::cerr << "Comando desconhecido: " << command << std::endl;
             printHelp();
         }
     } catch (const std::exception& e) {
